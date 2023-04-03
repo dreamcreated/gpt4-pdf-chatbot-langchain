@@ -20,10 +20,28 @@ If the question is not related to the context, politely respond that you are tun
 
 Question: {question}
 =========
+Context:
+
 {context}
 =========
 Answer in Markdown:`,
 );
+
+/*
+const QA_PROMPT = PromptTemplate.fromTemplate(
+  `
+、您是一个AI助手，提供有用的建议。您得到了以下长文档的提取部分和一个问题。根据提供的上下文等进行交流式回答。
+您既可以引用文档内容，又可以自己思考回答。但是不要编造超链接。请给出所有超链接。
+如果您在下面的上下文中找不到答家，请说"嗯，我不确定。", 然后请说出自行回答的内容"我的想法是"。但不要试图编造答案。
+如果问题与上下文无关，请礼貌地回应，您只能回答与上下文有关的问题。您尽可能用中文回答，可以中英对照回答。
+Question: {question}
+=========
+{context}
+=========
+Answer in Markdown:`,
+);  */
+
+
 
 export const makeChain = (
   vectorstore: PineconeStore,
@@ -36,7 +54,7 @@ export const makeChain = (
   const docChain = loadQAChain(
     new OpenAIChat({
       temperature: 0,
-      modelName: 'gpt-4', //change this to older versions (e.g. gpt-3.5-turbo) if you don't have access to gpt-4
+      modelName: 'gpt-3.5-turbo', //change this to older versions (e.g. gpt-3.5-turbo) if you don't have access to gpt-4
       streaming: Boolean(onTokenStream),
       callbackManager: onTokenStream
         ? CallbackManager.fromHandlers({
